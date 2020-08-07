@@ -1,16 +1,22 @@
-package netty;
+package com.netty.netty;
 
+import com.netty.config.MyComponentScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.mock.web.MockServletConfig;
 import org.springframework.mock.web.MockServletContext;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import javax.servlet.ServletContext;
+
 public class WebServer {
-	
+
 	private static Logger logger = LoggerFactory.getLogger(WebServer.class);
 
 	public static void main(String[] args) throws Exception {
@@ -19,14 +25,14 @@ public class WebServer {
 //		DispatcherServlet servlet = getDispatcherServlet();
 //		NettyHttpServer server = new NettyHttpServer(port,servlet);
 //		server.start();
-		
+
 		Integer port = 6001;
 		DispatcherServlet servlet = getDispatcherServlet();
 		NettyHttpServer server = new NettyHttpServer(port,servlet);
 		server.start();
-		
+
 	}
-	
+
 	public static DispatcherServlet getDispatcherServlet() throws Exception{
 
 		MockServletContext servletContext = new MockServletContext();
@@ -40,8 +46,9 @@ public class WebServer {
 
 		DispatcherServlet dispatcherServlet = new DispatcherServlet(mvcContext);
 		dispatcherServlet.init(servletConfig);
+
 		return dispatcherServlet;
-		
+
 	}
-	
+
 }

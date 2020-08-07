@@ -1,4 +1,4 @@
-package netty;
+package com.netty.netty;
 
 import org.springframework.web.servlet.DispatcherServlet;
 
@@ -12,17 +12,17 @@ import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.stream.ChunkedWriteHandler;
 
 public class HttpServerInitializer extends ChannelInitializer<SocketChannel> {
-	
+
 	private DispatcherServlet servlet;
-	
+
 	public HttpServerInitializer(DispatcherServlet servlet) {
 		this.servlet = servlet;
 	}
-	
+
 	public HttpServerInitializer() {
-		
+
 	}
-	
+
 	@Override
 	protected void initChannel(SocketChannel ch) throws Exception {
 		// TODO Auto-generated method stub

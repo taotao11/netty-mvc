@@ -1,4 +1,4 @@
-package netty;
+package com.netty.netty;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -9,17 +9,15 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.ServletContext;
-
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.util.UriUtils;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
@@ -42,11 +40,11 @@ import io.netty.handler.codec.http.multipart.MemoryAttribute;
 import io.netty.util.CharsetUtil;
 
 public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(HttpRequestHandler.class);
 	private final DispatcherServlet servlet;
 	private final ServletContext servletContext;
-	
+
 	public HttpRequestHandler(DispatcherServlet servlet) {
 		this.servlet = servlet;
 		this.servletContext = servlet.getServletConfig().getServletContext();
@@ -61,24 +59,24 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 
 	private Map<String, String> getRequestParams(ChannelHandlerContext ctx, HttpRequest req){
         Map<String, String>requestParams=new HashMap<String, String>();
-        // 处理get请求  
+        // 处理get请求
         if (req.getMethod() == HttpMethod.GET) {
-            QueryStringDecoder decoder = new QueryStringDecoder(req.getUri());  
-            Map<String, List<String>> parame = decoder.parameters();  
+            QueryStringDecoder decoder = new QueryStringDecoder(req.getUri());
+            Map<String, List<String>> parame = decoder.parameters();
             Iterator<Entry<String, List<String>>> iterator = parame.entrySet().iterator();
             while(iterator.hasNext()){
                 Entry<String, List<String>> next = iterator.next();
                 requestParams.put(next.getKey(), next.getValue().get(0));
             }
         }
-         // 处理POST请求  
+         // 处理POST请求
         if (req.getMethod() == HttpMethod.POST) {
-            HttpPostRequestDecoder decoder = new HttpPostRequestDecoder(  
-                    new DefaultHttpDataFactory(false), req);  
+            HttpPostRequestDecoder decoder = new HttpPostRequestDecoder(
+                    new DefaultHttpDataFactory(false), req);
             List<InterfaceHttpData> postData = decoder.getBodyHttpDatas(); //
             for(InterfaceHttpData data:postData){
-                if (data.getHttpDataType() == HttpDataType.Attribute) {  
-                    MemoryAttribute attribute = (MemoryAttribute) data;  
+                if (data.getHttpDataType() == HttpDataType.Attribute) {
+                    MemoryAttribute attribute = (MemoryAttribute) data;
                     requestParams.put(attribute.getName(), attribute.getValue());
                 }
             }
@@ -87,6 +85,7 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
     }
 
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest fullHttpRequest) throws Exception {
+	    logger.info("进入netty处理url: {}",fullHttpRequest);
         // TODO Auto-generated method stub
         boolean flag = HttpMethod.POST.equals(fullHttpRequest.getMethod())
                 || HttpMethod.GET.equals(fullHttpRequest.getMethod());
