@@ -19,19 +19,19 @@ public class WebServer {
 
 	private static Logger logger = LoggerFactory.getLogger(WebServer.class);
 
-	public static void main(String[] args) throws Exception {
-//		ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+//	public static void main(String[] args) throws Exception {
+////		ApplicationContext ctx = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+////		Integer port = 6001;
+////		DispatcherServlet servlet = getDispatcherServlet();
+////		NettyHttpServer server = new NettyHttpServer(port,servlet);
+////		server.start();
+//
 //		Integer port = 6001;
 //		DispatcherServlet servlet = getDispatcherServlet();
 //		NettyHttpServer server = new NettyHttpServer(port,servlet);
 //		server.start();
-
-		Integer port = 6001;
-		DispatcherServlet servlet = getDispatcherServlet();
-		NettyHttpServer server = new NettyHttpServer(port,servlet);
-		server.start();
-
-	}
+//
+//	}
 
 	public static DispatcherServlet getDispatcherServlet() throws Exception{
 
